@@ -48,12 +48,15 @@ namespace TaskMaster.ViewModels
 
         public AutentificateViewModel()
         {
-            ShowMainWindowCommand = new LambdaCommand(CanShowMainWindow, OnShowMainWindowCommandExecute);
+            if (Login == "user" && Password == "user")
+            {
+                ShowMainWindowCommand = new LambdaCommand(CanShowMainWindow, OnShowMainWindowCommandExecute);
+            }
         }
 
         public ICommand ShowMainWindowCommand { get; }
 
-
+        // этот метод нужно убрать!!!
         public bool CanShowMainWindow(object parameter)
         {
             if (Login == "user" && Password == "user") return true;

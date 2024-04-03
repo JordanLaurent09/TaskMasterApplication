@@ -12,10 +12,9 @@ namespace HTTPLib
 
         private static async Task<Stream> GetDataStream()
         {
-            // Создается клиент
+            
             var client = new HttpClient();
-            var response = await client.GetAsync(_data_url, HttpCompletionOption.ResponseHeadersRead); // возвращается только заголовок ответа,
-            //а пока еще не его тело 
+            var response = await client.GetAsync(_data_url, HttpCompletionOption.ResponseHeadersRead);
             return await response.Content.ReadAsStreamAsync();
         }
 
