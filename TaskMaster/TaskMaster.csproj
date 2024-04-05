@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\HTTPLib\HTTPLib.csproj" />
   </ItemGroup>
 
 </Project>

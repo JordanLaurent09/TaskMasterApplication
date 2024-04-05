@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace HTTPLib
 {
-    public class HTTPRequester
+    public static class HTTPRequester
     {
-        private static string _data_url = " ";
+        private static string _data_url = "";
 
         private static async Task<Stream> GetDataStream()
         {
-            
+            string id = "2";
+
+            string dataUrl = "http://192.168.10.106:8080/";
+
             var client = new HttpClient();
-            var response = await client.GetAsync(_data_url, HttpCompletionOption.ResponseHeadersRead);
+            var response = await client.GetAsync(dataUrl, HttpCompletionOption.ResponseHeadersRead);
             return await response.Content.ReadAsStreamAsync();
         }
 
@@ -22,7 +26,7 @@ namespace HTTPLib
         /// Разбивает поток байт на последовательность строк
         /// </summary>
         /// <returns></returns>
-        private static IEnumerable<string> GetDataLines()
+        public static IEnumerable<string> GetDataLines()
         {
             var data_stream = GetDataStream().Result; 
             var data_reader = new StreamReader(data_stream);
@@ -35,11 +39,10 @@ namespace HTTPLib
             }
         }
 
-        private static async void PrimaryHttpMethod()
+        public static async void PrimaryHttpMethod()
         {
             var client = new HttpClient();
-            string id = "2";
-            var response = await client.GetAsync($"http://localhost:8888/task?userId={id}");
+            var response = await client.GetAsync($"http://192.168.10.106:8080/?response=task&userId=1token=asd");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();

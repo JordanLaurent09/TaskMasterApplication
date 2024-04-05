@@ -11,15 +11,15 @@ namespace TaskMaster.ViewModels
 {
     public class CreateTaskViewModel : ViewModelBase
     {
-        private string _title;
-        private string _description;
+        private string ?_title;
+        private string ?_description;
         private DateTime _deadline;
-        private Priority _priority;
-        private ObservableCollection<Department> _departments;
+        private string ?_priority;
+        private ObservableCollection<Department> ?_departments;
 
         public string Title
         {
-            get => _title;
+            get => _title!;
             set
             {
                 if (_title != value)
@@ -32,7 +32,7 @@ namespace TaskMaster.ViewModels
 
         public string Description
         {
-            get => _description;
+            get => _description!;
             set
             {
                 if (_description != value)
@@ -56,9 +56,9 @@ namespace TaskMaster.ViewModels
             }
         }
 
-        public Priority Priority
+        public string Priority
         {
-            get => _priority;
+            get => _priority!;
             set
             {
                 if (_priority != value)
@@ -71,7 +71,7 @@ namespace TaskMaster.ViewModels
 
         public ObservableCollection<Department> Departments
         {
-            get => _departments;
+            get => _departments!;
             set
             {
                 if (_departments != value)

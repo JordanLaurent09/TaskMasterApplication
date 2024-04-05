@@ -9,6 +9,7 @@ using TaskMaster.Infrastructure.Commands;
 using TaskMaster.ViewModels.BaseViewModel;
 using System.Windows.Controls;
 
+
 namespace TaskMaster.ViewModels
 {
     public class AutentificateViewModel : ViewModelBase
