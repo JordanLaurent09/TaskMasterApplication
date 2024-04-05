@@ -8,31 +8,52 @@
         mc:Ignorable="d"
         Title="Autentify" Height="450" Width="800">
     <Grid Margin="10">
-        <Grid.DataContext>
-            <viewmodels:AutentificateViewModel/>
-        </Grid.DataContext>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+        <TabControl>
+            <TabItem Header="Войти в систему">
+                <StackPanel>
+                    <StackPanel.DataContext>
+                        <viewmodels:AutentificateViewModel/>
+                    </StackPanel.DataContext>
+                    <TextBlock Text="Login"/>
+                    <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <StackPanel Grid.Row="0" VerticalAlignment="Bottom"
-                Margin="0,0,0,10">
-            <TextBlock Text="Login"/>
-            <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="1" VerticalAlignment="Bottom"
-                Margin="0,0,0,10">
-            <TextBlock Text="Password"/>
-            <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
-        </StackPanel >
+                    <TextBlock Text="Password"/>
+                    <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <Button Grid.Row="2"
-            Width="150" Height="30"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Content="Enter"
-            Command="{Binding ShowMainWindowCommand}"/>
+                    <Button 
+                Width="150" Height="30"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Content="Enter"
+                Command="{Binding ShowMainWindowCommand}"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Зарегистрироваться">
+                <StackPanel>
+                    <StackPanel.DataContext>
+                        <viewmodels:RegistrationViewModel/>
+                    </StackPanel.DataContext>
+
+                    <TextBlock Text="Введите имя"/>
+                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="Введите фамилию"/>
+                    <TextBox Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="Укажите дату рождения"/>
+                    <Calendar SelectedDate="{Binding Birthday, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="Ваш контактный телефон"/>
+                    <TextBox Text="{Binding ContactPhone, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="Придумайте логин"/>
+                    <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="Придумайте пароль"/>
+                    <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="Укажите название отдела"/>
+                    <TextBox Text="{Binding Department, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Button Content="Завершить регистрацию"
+                            Command="{Binding RegistrateCommand}"/>
+
+                </StackPanel>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

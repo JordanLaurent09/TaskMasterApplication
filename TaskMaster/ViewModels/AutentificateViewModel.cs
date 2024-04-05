@@ -13,9 +13,8 @@ namespace TaskMaster.ViewModels
 {
     public class AutentificateViewModel : ViewModelBase
     {
-        private string _login ;
+        private string _login;
         private string _password;
-
 
         public string Login
         {
@@ -23,13 +22,14 @@ namespace TaskMaster.ViewModels
 
             set
             {
-                if(_login != value)
+                if (_login != value)
                 {
                     _login = value;
                     OnPropertyChanged(nameof(Login));
                 }
             }
         }
+
 
         public string Password
         {
@@ -46,28 +46,27 @@ namespace TaskMaster.ViewModels
         }
 
 
+
         public AutentificateViewModel()
         {
-            if (Login == "user" && Password == "user")
-            {
-                ShowMainWindowCommand = new LambdaCommand(CanShowMainWindow, OnShowMainWindowCommandExecute);
-            }
+            ShowMainWindowCommand = new LambdaCommand((object p) => true, OnShowMainWindowCommandExecute);
         }
 
         public ICommand ShowMainWindowCommand { get; }
 
-        // этот метод нужно убрать!!!
-        public bool CanShowMainWindow(object parameter)
-        {
-            if (Login == "user" && Password == "user") return true;
-            return false;
-        }
         public void OnShowMainWindowCommandExecute(object parameter)
-        {          
-            Window current = Application.Current.MainWindow;
-            Window window = new MainWindow();
-            window.Show();
-            current.Close();
+        {
+            if (Login == "user" && Password == "user")
+            {
+                Window current = Application.Current.MainWindow;
+                Window window = new MainWindow(new Models.User("admin", "admin", new DateTime(2005, 4, 25), "777-777", Login, Password, "Administration"));
+                window.Show();
+                current.Close();
+            }
+            else
+            {
+                MessageBox.Show("login or/and password is unknown");
+            }
         }
     }
 }

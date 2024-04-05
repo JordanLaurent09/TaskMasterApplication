@@ -16,5 +16,18 @@ namespace TaskMaster.Models
         public string Login { get; set; }
         public string Password { get; set; }
         public string Department { get; set; }
+
+        public User() { }
+
+        public User(string name, string surname, DateTime birthday, string phone, string login, string password, string department)
+        {
+            Name = name;
+            Surname = surname;
+            Birthday = birthday;
+            ContactPhone = phone;
+            Login = login;
+            Password = password;
+            Department = department;
+        }
     }
 }

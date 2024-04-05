@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TaskMaster.Models;
 
 namespace TaskMaster
 {
@@ -16,9 +17,11 @@ namespace TaskMaster
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public User CurrentUser { get; set; }
+        public MainWindow(User user)
         {
             InitializeComponent();
+            CurrentUser = user;
         }
     }
 }
