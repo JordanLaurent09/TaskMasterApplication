@@ -14,12 +14,12 @@ namespace TaskMaster.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private List<Models.Task> _tasks;
+        private ObservableCollection<Models.Task> _tasks;
         private Models.Task _currentTask;
         private User _currentUser;
-        private List<Department> _departments;
+        private ObservableCollection<Department> _departments;
 
-        public List<Models.Task> Tasks
+        public ObservableCollection<Models.Task> Tasks
         {
             get => _tasks;
             set
@@ -58,7 +58,7 @@ namespace TaskMaster.ViewModels
             }
         }
 
-        public List<Department> Departments
+        public ObservableCollection<Department> Departments
         {
             get => _departments;
             set
@@ -73,7 +73,7 @@ namespace TaskMaster.ViewModels
 
         public MainViewModel() { }
 
-        public MainViewModel(List<Models.Task> tasks, User currentUser)
+        public MainViewModel(ObservableCollection<Models.Task> tasks, User currentUser)
         {
             Tasks = tasks;
             CurrentUser = currentUser;

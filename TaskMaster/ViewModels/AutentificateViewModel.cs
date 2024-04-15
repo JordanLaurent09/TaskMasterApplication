@@ -135,9 +135,10 @@ namespace TaskMaster.ViewModels
 
         public void OnAuthoriseCommandExecute(object parameter)
         {
-            ObservableCollection<Models.Task> allTasks = new ObservableCollection<Models.Task>();
-            List<Models.Task> primaryTAskList = new List<Models.Task>();
+            
+            List<Models.Task> primaryTaskList = new List<Models.Task>();
             List<User> users = new List<User>();
+
 
 
 
@@ -147,9 +148,11 @@ namespace TaskMaster.ViewModels
 
             var info = httpWork.GetAuthInfo(userInfo).Result;
 
-            CSVReader.InfoTotal(ref primaryTAskList, ref users, info);
+            CSVReader.InfoTotal(ref primaryTaskList, ref users, info);
 
+            ObservableCollection<Models.Task> allTasks = ObservableConverter.ConvertToObservable(primaryTaskList);
 
+            MainViewModel mainViewModel = new MainViewModel(allTasks, users[0]);
         }
 
         //private string _login;
