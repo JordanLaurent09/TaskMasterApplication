@@ -17,11 +17,11 @@ namespace TaskMaster
     /// </summary>
     public partial class MainWindow : Window
     {
-        public User CurrentUser { get; set; }
-        public MainWindow(User user)
+        
+        public MainWindow()
         {
             InitializeComponent();
-            CurrentUser = user;
+           
         }
     }
 }

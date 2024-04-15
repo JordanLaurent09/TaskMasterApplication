@@ -25,14 +25,14 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Content="Enter"
-                Command="{Binding ShowMainWindowCommand}"/>
+                Command="{Binding AuthorisationCommand}"/>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Зарегистрироваться">
                 <StackPanel>
-                    <StackPanel.DataContext>
+                    <!--<StackPanel.DataContext>
                         <viewmodels:RegistrationViewModel/>
-                    </StackPanel.DataContext>
+                    </StackPanel.DataContext>-->
 
                     <TextBlock Text="Введите имя"/>
                     <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>

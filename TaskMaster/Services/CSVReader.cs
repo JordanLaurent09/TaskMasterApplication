@@ -13,11 +13,11 @@ namespace TaskMaster.Services
 {
     public static class CSVReader
     {
-        public static void InfoTotal(ref List<Models.Task> tasks, ref List<User> users, StreamReader stream)
+        public static void InfoTotal(ref List<Models.Task> tasks, ref List<User> users, Stream stream)
         {
-            //var dataReader = new StreamReader(stream);
+            var dataReader = new StreamReader(stream, Encoding.Unicode);
 
-            string[] temp = stream.ReadToEnd().Split('^');
+            string[] temp = dataReader.ReadToEnd().Split('^');
 
             //StreamReader tasksInfo = new StreamReader(temp[0]);
             //StreamReader userInfo = new StreamReader (temp[1]);
