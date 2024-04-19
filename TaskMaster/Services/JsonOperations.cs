@@ -28,5 +28,12 @@ namespace TaskMaster.Services
 
             return autString;
         }
+
+        public static string JsonForNewTask(Models.Task task)
+        {
+            string taskString = JsonSerializer.Serialize<Models.Task>(task);
+
+            return taskString;
+        }
     }
 }

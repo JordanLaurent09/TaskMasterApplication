@@ -6,9 +6,125 @@
         xmlns:local="clr-namespace:TaskMaster"
         xmlns:commands="clr-namespace:TaskMaster.Infrastructure.Commands" xmlns:viewmodels="clr-namespace:TaskMaster.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="800" Width="800">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="70*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="TaskMaster" FontSize="30" 
+               HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <TextBlock Text="People connection is OUR profession!" FontSize="20" 
+               HorizontalAlignment="Center"/>
+        </StackPanel>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Текущие задачи">
+                <ListView ItemsSource="{Binding Tasks}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="Номер задачи"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Title}" Header="Название задачи"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Описание"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding StartDate}" Header="Дата поступления задачи"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding DeadLine}" Header="Срок выполнения"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Status}" Header="Статус"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Priority}" Header="Приоритет"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+            <TabItem Header="Создать задачу">
+                <StackPanel>
+                    <TextBlock Text="Введите название новой задачи" Margin="5, 5, 5, 5"/>
+                    <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" 
+                             Width="100" HorizontalAlignment="Left" Margin="5,5,5,5"/>
+                    <TextBlock Text="Опишите задачу" Margin="5, 5, 5, 5"/>
+                    <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" 
+                             Width="400" HorizontalAlignment="Left" Margin="5,5,5,5"/>
+                    <TextBlock Text="Укажите крайнюю дату выполнения задачи" Margin="5, 5, 5, 5"/>
+                    <Calendar  SelectedDate="{Binding DeadLine, UpdateSourceTrigger=PropertyChanged}"
+                        HorizontalAlignment="Left" Margin="5,5,5,5"/>
+                    <TextBlock Text="Укажите приоритет задачи" Margin="5, 5, 5, 5"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="20*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Text="{Binding Priority, UpdateSourceTrigger=PropertyChanged}"/>
+                        <!--<ComboBox Grid.Column="0" ItemsSource="{Binding Priorities}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding PriorityType}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBox Grid.Row="1">
+                            
+                        </TextBox>-->
+                        
+                    </Grid>
+                    <!--<Expander Header="Уровни приоритета" IsExpanded="False">
+                        <StackPanel>
+                            <RadioButton Content="ВЫСОКИЙ"/>
+                            <RadioButton Content="СРЕДНИЙ"/>
+                            <RadioButton Content="НИЗКИЙ"/>
+                        </StackPanel>
+                    </Expander>-->
+                    <TextBlock Text="Выберите нужный отдел" Margin="5, 5, 5, 5"/>
+                    <TextBox Text="{Binding DepartmentName, UpdateSourceTrigger=PropertyChanged}"/>
+                    
+                    <Button 
+                        Width="150" Height="30"
+                        HorizontalAlignment="Left"                      
+                        Content="Добавить задачу" Margin="40"
+                        Command="{Binding CreateTaskCommand}"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Личный кабинет">
+                <StackPanel>
+                    <TextBlock Text="Добро пожаловать в Ваш личный кабинет! Здесь Вы можете просматривать свою личную информацию и при необходимости изменять ее"
+                    HorizontalAlignment="Center"/>
+                    <TextBlock Text="Ваше имя"/>
+                    <TextBox Text="{Binding CurrentUser.FirstName}"/>
+                    <TextBlock Text="Ваша фамилия"/>
+                    <TextBox Text="{Binding CurrentUser.LastName}"/>
+                    <TextBlock Text="Ваша дата рождения"/>
+                    <TextBox Text="{Binding CurrentUser.Birthday}"/>
+                    <TextBlock Text="Ваш контактный телефон"/>
+                    <TextBox Text="{Binding CurrentUser.ContactPhone}"/>
+                    <TextBlock Text="Ваш логин"/>
+                    <TextBox Text="{Binding CurrentUser.Login}"/>
+                    <TextBlock Text="Ваш пароль"/>
+                    <TextBox Text="{Binding CurrentUser.Password}"/>
+                    <TextBlock Text="Ваш отдел"/>
+                    <TextBox Text="{Binding CurrentUser.Department}"/>
+                    <Button Content="Сохранить изменения"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1" Content="Оформить отчет"
+            Margin="5,5,5,5"/>
+            <Button Grid.Column="2" Content="Выйти"
+            Margin="5,5,5,5" Command="{Binding CloseTheApplicationCommand}"/>
+
+        </Grid>
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="70*"/>
             <RowDefinition Height="10*"/>
@@ -23,12 +139,15 @@
         <TabControl Grid.Row="1">
             <TabItem Header="Текущие задачи">
                 <ListView ItemsSource="{Binding Tasks}">
-                    <ListView.DataContext>
-                        <viewmodels:MainViewModel/>
-                    </ListView.DataContext>
                     <ListView.View>
                         <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="Номер задачи"/>
                             <GridViewColumn DisplayMemberBinding="{Binding Title}" Header="Название задачи"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Описание"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding StartDate}" Header="Дата поступления задачи"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding DeadLine}" Header="Срок выполнения"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Status}" Header="Статус"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Priority}" Header="Приоритет"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -88,7 +207,7 @@
             <Button Grid.Column="2" Content="Выйти"
                     Margin="5,5,5,5"/>
 
-        </Grid>
+        </Grid>-->
 
 
         <!--<Grid.RowDefinitions>

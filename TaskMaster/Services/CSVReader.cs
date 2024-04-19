@@ -40,5 +40,14 @@ namespace TaskMaster.Services
 
             //dataReader.Close();
         }
+
+        public static string AddTaskServerResponse(Stream stream)
+        {
+            var dataReader = new StreamReader(stream, Encoding.Unicode);
+
+            string result = dataReader.ReadToEnd();
+
+            return result;
+        }
     }
 }

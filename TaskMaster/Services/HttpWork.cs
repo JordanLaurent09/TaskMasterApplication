@@ -39,6 +39,19 @@ namespace TaskMaster.Services
                 return await response.Content.ReadAsStreamAsync();
             }
         }
-        
+
+        public async Task<Stream> AddNewTAsk(string message)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                HttpContent content = new StringContent(message, Encoding.UTF8, "application/taskAdd");
+
+                HttpResponseMessage response = client.PostAsync("http://176.123.160.24:8080", content).Result;
+
+
+                return await response.Content.ReadAsStreamAsync();
+            }
+        }
+
     }
 }

@@ -129,9 +129,7 @@ namespace TaskMaster.ViewModels
         }
 
         public ICommand AuthorisationCommand { get; set; }
-        public ICommand RegistrationCommand { get; set; }
-
-
+        
 
         public void OnAuthoriseCommandExecute(object parameter)
         {
@@ -153,6 +151,8 @@ namespace TaskMaster.ViewModels
             ObservableCollection<Models.Task> allTasks = ObservableConverter.ConvertToObservable(primaryTaskList);
 
             MainViewModel mainViewModel = new MainViewModel(allTasks, users[0]);
+
+            
         }
 
         //private string _login;
