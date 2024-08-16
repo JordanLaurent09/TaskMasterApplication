@@ -13,15 +13,19 @@ namespace TaskMaster.Models
         public string LastName { get; set; }
         public DateTime Birthday { get; set; }
         public string ContactPhone { get; set; }
+        
         public string Login { get; set; }
         public string Password { get; set; }
+
+        public string Email {  get; set; }
         public string Department { get; set; }
 
         public bool IsResponsible { get; set; }
 
+        //public bool IsAdmin { get; set; }
         public User() { }
 
-        public User(string firstName, string lastName, DateTime birthday, string phone, string login, string password, string department, bool isResponsible)
+        public User(string firstName, string lastName, DateTime birthday, string phone, string login, string password, string email, string department, bool isResponsible)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -29,6 +33,7 @@ namespace TaskMaster.Models
             ContactPhone = phone;
             Login = login;
             Password = password;
+            Email = email;
             Department = department;
             IsResponsible = isResponsible;
         }

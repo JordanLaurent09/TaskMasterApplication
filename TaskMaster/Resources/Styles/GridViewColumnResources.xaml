@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="TitleColumn" TargetType="GridViewColumnHeader">
+        <Setter Property="Background" Value="Aquamarine"/>
+    </Style>
+
+    <DataTemplate x:Key="HeaderTemplate">
+        <DockPanel>
+            <CheckBox/>
+            <TextBlock FontSize="16" Foreground="DarkBlue">
+                <TextBlock.Text>
+                    <Binding/>
+                </TextBlock.Text>
+            </TextBlock>
+        </DockPanel>
+    </DataTemplate>
+
+
+
+    <!--Определение внешнего вида ячеек GridViewColumn-->
+
+    <DataTemplate x:Key="myCellTemplate">
+        <DockPanel>
+            <TextBlock Foreground="Black" Background="White" FontWeight="Bold" FontSize="10"
+                       Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="1.0">
+                <TextBlock.Text>
+                    <Binding Path="Title"/>
+                </TextBlock.Text>
+            </TextBlock>
+        </DockPanel>
+    </DataTemplate>
+
+</ResourceDictionary>

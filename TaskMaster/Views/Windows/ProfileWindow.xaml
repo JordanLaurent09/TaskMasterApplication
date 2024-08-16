@@ -1,0 +1,59 @@
+﻿<Window x:Class="TaskMaster.Views.Windows.ProfileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TaskMaster.Views.Windows"
+        mc:Ignorable="d"
+        Title="ProfileWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="70*"/>
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" Source="\Resources\Images\scale_1200.jpg"
+               Stretch="UniformToFill"/>
+        <Grid Grid.Row="1" Background="#D7A246">
+            <TextBlock Text="Пользовательская информация" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontSize="18"/>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Имя" Margin="10"/>
+                <TextBlock Text="Фамилия" Margin="10"/>
+                <TextBlock Text="Дата рождения" Margin="10"/>
+                <TextBlock Text="Контактный телефон" Margin="10"/>
+                <TextBlock Text="Логин" Margin="10"/>
+                <TextBlock Text="Отдел" Margin="10"/>
+            </StackPanel>
+            
+            
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70*"/>
+                    <RowDefinition Height="20*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0">
+                    <TextBlock Text="{Binding CurrentUser.FirstName}" Margin="10"/>
+                    <TextBlock Text="{Binding CurrentUser.LastName}" Margin="10"/>
+                    <TextBlock Text="{Binding CurrentUser.Birthday}" Margin="10"/>
+                    <TextBlock Text="{Binding CurrentUser.ContactPhone}" Margin="10"/>
+                    <TextBlock Text="{Binding CurrentUser.Login}" Margin="10"/>
+                    <TextBlock Text="{Binding CurrentUser.Department}" Margin="10"/>
+                    
+                </StackPanel>
+
+                <Button Grid.Row="1" Content="Назад" Style="{StaticResource AddTaskButton}" Foreground="White" Margin="5" Height="40" Width="160"
+                        Command="{Binding BackToMainWindowCommand}"/>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

@@ -4,6 +4,15 @@
              xmlns:local="clr-namespace:TaskMaster"
              StartupUri="Views\Windows\Autentify.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="Resources/Styles/TextBoxResources.xaml"/>
+            <ResourceDictionary Source="Resources/Styles/PasswordBoxResources.xaml"/>
+            <ResourceDictionary Source="Resources/Styles/ButtonResources.xaml"/>
+            <ResourceDictionary Source="Resources/Styles/CanvasResources.xaml"/>
+            <ResourceDictionary Source="Resources/Styles/GridViewColumnResources.xaml"/>
+            <ResourceDictionary Source="Resources/Styles/GridResources.xaml"/>
+        </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

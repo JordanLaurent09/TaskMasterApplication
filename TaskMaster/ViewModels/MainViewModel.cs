@@ -10,6 +10,7 @@ using TaskMaster.Infrastructure.Commands;
 using System.Collections.ObjectModel;
 using TaskMaster.Models;
 using TaskMaster.Services;
+using System.Windows.Threading;
 
 namespace TaskMaster.ViewModels
 {
@@ -17,116 +18,12 @@ namespace TaskMaster.ViewModels
     {
         private ObservableCollection<Models.Task> _tasks;
         private Models.Task _currentTask;        
-        private User _currentUser;
-        private ObservableCollection<Department> _departments;
+        private User _currentUser;      
+        private ObservableCollection<string> _statuses;
+        private List<Priority> _primaryPriorities = new List<Priority>();
+        private List<Department> _primaryDepartments = new List<Department>();
 
-        // Данные пользователя
-        //private string _firstName;
-        //private string _lastName;
-        //private DateTime _birthday;
-        //private string _contactPhone;
-        //private string _login;
-        //private string _password;
-        //private string _department;
-        //private bool _isResponsible;
-
-        // данные отдела
-        private string _departmentName;
-
-        // данные добавляемой задачи
-
-        private string _title;
-        private string _description;
-        private DateTime _deadLine;
-        private string _priority;
-
-
-
-
-
-        private ObservableCollection<Prior> _priorities;
-
-        public ObservableCollection<Prior> Priorities
-        {
-            get => _priorities;
-            set
-            {
-                if (_priorities != value)
-                {
-                    _priorities = value;
-                    OnPropertyChanged(nameof(Priorities));
-                }
-            }
-        }
-
-
-
-        public string DepartmentName
-        {
-            get => _departmentName;
-            set
-            {
-                if(_departmentName != value)
-                {
-                    _departmentName = value;
-                    OnPropertyChanged(nameof(DepartmentName));
-                }
-            }
-        }
-
-
-        public string Title
-        {
-            get => _title;
-            set
-            {
-                if (_title != value)
-                {
-                    _title = value;
-                    OnPropertyChanged(nameof(Title));
-                }
-            }
-        }
-
-        public string Description
-        {
-            get => _description;
-            set
-            {
-                if (_description != value)
-                {
-                    _description = value;
-                    OnPropertyChanged(nameof(Description));
-                }
-            }
-        }
-
-        public DateTime DeadLine
-        {
-            get => _deadLine;
-            set
-            {
-                if (_deadLine != value)
-                {
-                    _deadLine = value;
-                    OnPropertyChanged(nameof(DeadLine));
-                }
-            }
-        }
-
-        public string Priority
-        {
-            get => _priority;
-            set
-            {
-                if (_priority != value)
-                {
-                    _priority = value;
-                    OnPropertyChanged(nameof(Priority));
-                }
-            }
-        }
-
+        private Dispatcher _dispatcher = Application.Current.Dispatcher;
 
         public ObservableCollection<Models.Task> Tasks
         {
@@ -168,34 +65,40 @@ namespace TaskMaster.ViewModels
             }
         }
 
-        public ObservableCollection<Department> Departments
+        
+        public ObservableCollection<string> Statuses
         {
-            get => _departments;
+            get => _statuses;
             set
             {
-                if (_departments != value)
+                if(_statuses != value)
                 {
-                    _departments = value;
-                    OnPropertyChanged(nameof(Departments));
+                    _statuses = value;
+                    OnPropertyChanged(nameof(Statuses));
                 }
             }
         }
 
-        
-
-        public MainViewModel(ObservableCollection<Models.Task> tasks, User currentUser)
+        public MainViewModel(ObservableCollection<Models.Task> tasks, User currentUser, List<Department> departments, List<Status> statuses, List<Priority> priorities)
         {
-            Tasks = tasks;
+            Tasks = ObservableConverter.SortTasksCollection(tasks);
             CurrentUser = currentUser;
 
-            CreateTaskCommand = new LambdaCommand((object p) => true, OnCreatingTask);
-            CloseTheApplicationCommand = new LambdaCommand((object p) => true, OnClosingAnApp);
 
-            // Тестовая область
-            Priorities = new ObservableCollection<Prior>();
-            Priorities.Add(new Prior() { PriorityType = "ВЫСОКИЙ" });
-            Priorities.Add(new Prior() { PriorityType = "СРЕДНИЙ" });
-            Priorities.Add(new Prior() { PriorityType = "НИЗКИЙ" });
+            CurrentTask = tasks[0];
+
+            Statuses = ObservableConverter.GetStatusTypes(statuses);
+
+            _primaryDepartments = departments;
+
+            _primaryPriorities = priorities;
+
+            CreateTaskCommand = new LambdaCommand((object p) => true, OnCreatingTask);
+            CloseTheApplicationCommand = new LambdaCommand((object p) => true, OnClosingAnApp);            
+            ShowUserDataCommand = new LambdaCommand((object p) => true, OnOpenProfileCommand);
+            ChangeStatusCommand = new LambdaCommand((object p) => true, OnChangingStatus);
+            MakeTheReportCommand = new LambdaCommand((object p) => true, OnMakeReport);
+           
 
 
             MainWindow mainWindow = new MainWindow();
@@ -204,60 +107,84 @@ namespace TaskMaster.ViewModels
             
         }
 
-        public ICommand ShowDepartmentsListCommand { get; set; }
-
+        
+        /// <summary>
+        /// Команда, обеспечивающая переход к окну с функционалом создания новой задачи
+        /// </summary>
         public ICommand CreateTaskCommand { get; set; }
 
+        /// <summary>
+        /// Команда, завершающая работу с приложением
+        /// </summary>
         public ICommand CloseTheApplicationCommand { get; set; }
 
+        /// <summary>
+        /// Команда, формирующая отчет о задачах
+        /// </summary>
         public ICommand MakeTheReportCommand { get; set; }
+
+        /// <summary>
+        /// Команда для загрузки окна личного кабинета
+        /// </summary>
+        public ICommand ShowUserDataCommand { get; set; }
+
+        /// <summary>
+        /// Команда для изменения статуса конкретной задачи
+        /// </summary>
+        public ICommand ChangeStatusCommand { get; set; }
+
 
 
         public void OnCreatingTask(object parameter)
-        {
-            Models.Task newTask = new Models.Task() {Title = Title, Description = Description, 
-                StartDate = DateTime.Now, DeadLine = DeadLine, Priority = Priority, Department = DepartmentName};
-
-            string taskJsonString = JsonOperations.JsonForNewTask(newTask);
-
-            HttpWork httpWork = new HttpWork();
-
-            var serverResponse = httpWork.AddNewTAsk(taskJsonString).Result;
-
-            string serverResponseString = CSVReader.AddTaskServerResponse(serverResponse);
-
-            MessageBox.Show(serverResponseString);
+        {          
+            TaskConstructorViewModel taskConstructorViewModel  = new TaskConstructorViewModel(Tasks, _primaryPriorities, _primaryDepartments);
         }
+
 
         public void OnClosingAnApp(object parameter)
         {
             Application.Current.Shutdown();
         }
 
-        //private ObservableCollection<Task> _tasks;
+        public void OnOpenProfileCommand(object parameter)
+        {          
+            ProfileViewModel profileViewModel = new ProfileViewModel(CurrentUser);                 
+        }
 
-        //public ObservableCollection<Task> Tasks
-        //{
-        //    get => _tasks;
 
-        //    set
-        //    {
-        //        if (_tasks != value)
-        //        {
-        //            _tasks = value;
-        //            OnPropertyChanged(nameof(Tasks));
-        //        }
-        //    }
-        //}
+       
+        public void OnChangingStatus(object parameter)
+        {           
+            string taskJsonString = JsonOperations.JsonForNewTask(CurrentTask);
 
-        //public MainViewModel()
-        //{
-        //    _tasks = new ObservableCollection<Task>();
-        //}
-    }
+            // Здесь шифруется информация о задаче
 
-    public class Prior
-    {
-        public string ?PriorityType { get; set; }
+            string encryptedString = Cypher.DecryptData(taskJsonString);
+
+            HttpWork httpWork = new HttpWork();
+
+            var serverResponse = httpWork.ChangeTaskStatus(encryptedString).Result;
+
+            string serverResponseString = CSVReader.AddTaskServerResponse(serverResponse);
+
+            // Проверить правильность DecryptData (возможно, потребуется GetEncryptData)
+            string cryptedServerResponse = Cypher.DecryptData(serverResponseString);
+
+            //// так можно обозначать результат попытки добавить новую задачу 
+            MessageBox.Show(cryptedServerResponse, "Успешно!", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        
+        public async void OnMakeReport(object parameter)
+        {
+            await System.Threading.Tasks.Task.Run(() =>
+            {
+                _dispatcher.Invoke(() =>
+                {
+                    MessageBox.Show("Отчет формируется");
+                });
+                ReportMaker.MakeReport(Tasks);
+                MessageBox.Show("Отчет сформирован");
+            });
+        }
     }
 }

@@ -12,75 +12,16 @@ using TaskMaster.Services;
 using System.IO;
 using System.Collections.ObjectModel;
 using TaskMaster.Models;
+using TaskMaster.Views.Windows;
+using System.Runtime.CompilerServices;
 
 namespace TaskMaster.ViewModels
 {
     public class AutentificateViewModel : ViewModelBase
-    {
-        private string _name;
-        private string _surname;
-        private DateTime _birthday;
-        private string _contactPhone;
+    {       
         private string _login;
         private string _password;
-        private string _department;
-
-        public string Name
-        {
-            get => _name;
-
-            set
-            {
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged(nameof(Name));
-                }
-            }
-        }
-
-        public string Surname
-        {
-            get => _surname;
-
-            set
-            {
-                if (_surname != value)
-                {
-                    _surname = value;
-                    OnPropertyChanged(nameof(Surname));
-                }
-            }
-        }
-
-        public DateTime Birthday
-        {
-            get => _birthday;
-
-            set
-            {
-                if (_birthday != value)
-                {
-                    _birthday = value;
-                    OnPropertyChanged(nameof(Birthday));
-                }
-            }
-        }
-
-        public string ContactPhone
-        {
-            get => _contactPhone;
-
-            set
-            {
-                if (_contactPhone != value)
-                {
-                    _contactPhone = value;
-                    OnPropertyChanged(nameof(ContactPhone));
-                }
-            }
-        }
-
+        
         public string Login
         {
             get => _login;
@@ -109,19 +50,7 @@ namespace TaskMaster.ViewModels
             }
         }
 
-        public string Department
-        {
-            get => _department;
-
-            set
-            {
-                if (_department != value)
-                {
-                    _department = value;
-                    OnPropertyChanged(nameof(Department));
-                }
-            }
-        }
+        
 
         public AutentificateViewModel()
         {
@@ -135,80 +64,58 @@ namespace TaskMaster.ViewModels
         {
             
             List<Models.Task> primaryTaskList = new List<Models.Task>();
+
             List<User> users = new List<User>();
 
+            List<Department> departments = new List<Department>();
 
+            List<Status> statuses = new List<Status>();
 
+            List<Priority> priorities = new List<Priority>();
+
+            // Здесь будут шифроваться логин и пароль для пользователя
 
             string userInfo = JsonOperations.JsonForLogin(Login, Password);
 
+            string cryptedUserInfo = Cypher.DecryptData(userInfo);
+
             HttpWork httpWork = new HttpWork();
 
-            var info = httpWork.GetAuthInfo(userInfo).Result;
+            var info = httpWork.GetAuthInfo(cryptedUserInfo).Result;
 
-            CSVReader.InfoTotal(ref primaryTaskList, ref users, info);
+            
+            
+            // Данные возвращаются уже расшифрованными
+
+            Data allData = JsonOperations.GetAllData(info);
+
+            
+
+
+            primaryTaskList = allData.Tasks;
+
+            users = allData.Users;
+
+            departments = allData.Departments;
+
+            statuses = allData.Statuses;
+
+            priorities = allData.Priorities;
 
             ObservableCollection<Models.Task> allTasks = ObservableConverter.ConvertToObservable(primaryTaskList);
 
-            MainViewModel mainViewModel = new MainViewModel(allTasks, users[0]);
+            Window autentificateViewModel = Application.Current.MainWindow;
 
+            if (users.Count > 0)
+            {
+                MainViewModel mainViewModel = new MainViewModel(allTasks, users[0], departments, statuses, priorities);
+                autentificateViewModel.Close();
+            }
+            else
+            {
+                MessageBox.Show("Введены неверные данные");
+            }         
             
         }
-
-        //private string _login;
-        //private string _password;
-
-        //public string Login
-        //{
-        //    get => _login;
-
-        //    set
-        //    {
-        //        if (_login != value)
-        //        {
-        //            _login = value;
-        //            OnPropertyChanged(nameof(Login));
-        //        }
-        //    }
-        //}
-
-
-        //public string Password
-        //{
-        //    get => _password;
-
-        //    set
-        //    {
-        //        if (_password != value)
-        //        {
-        //            _password = value;
-        //            OnPropertyChanged(nameof(Password));
-        //        }
-        //    }
-        //}
-
-
-
-        //public AutentificateViewModel()
-        //{
-        //    ShowMainWindowCommand = new LambdaCommand((object p) => true, OnShowMainWindowCommandExecute);
-        //}
-
-        //public ICommand ShowMainWindowCommand { get; }
-
-        //public void OnShowMainWindowCommandExecute(object parameter)
-        //{
-        //    if (Login == "user" && Password == "user")
-        //    {
-        //        Window current = Application.Current.MainWindow;
-        //        Window window = new MainWindow(new Models.User("admin", "admin", new DateTime(2005, 4, 25), "777-777", Login, Password, "Administration"));
-        //        window.Show();
-        //        current.Close();
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("login or/and password is unknown");
-        //    }
-        //}
     }
 }

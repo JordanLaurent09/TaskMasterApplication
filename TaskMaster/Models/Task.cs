@@ -15,9 +15,11 @@ namespace TaskMaster.Models
         public string ?Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime DeadLine { get; set; }
+
+        public string? Department { get; set; }
         public string ?Status { get; set; }
         public string ?Priority { get; set; }
 
-        public string? Department {  get; set; }
+        
     }
 }

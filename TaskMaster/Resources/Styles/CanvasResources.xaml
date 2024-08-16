@@ -1,0 +1,31 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="AuthCanvas" TargetType="Canvas">
+    <Setter Property="Background">
+        <Setter.Value>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" >
+                <GradientStop Color="purple" Offset="0.0"/>
+                <GradientStop Color="#c698b8" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Setter.Value>
+    </Setter>
+    </Style>
+
+    <Style x:Key="AuthCanvas2" TargetType="Canvas">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="#7a6e91" Offset="0.0"/>
+                    <GradientStop Color="#c994b4" Offset="0.5"/>
+                    <GradientStop Color="#f9b2d2" Offset="1.0"/>
+
+
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
+</ResourceDictionary>

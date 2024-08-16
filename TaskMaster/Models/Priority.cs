@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace TaskMaster.Models
 {
-    public class Department
+    public class Priority
     {
         public int Id { get; set; }
-        public string? Name { get; set; }     
-        
+
+        public string PriorityType { get; set; }
     }
 }
